@@ -4,4 +4,5 @@ rootkey.csv
 # Jetbrain IDE
 .idea/
 
-
+# python
+__pycache__/
