@@ -1,0 +1,6 @@
+<speak>
+<prosody pitch="%pitch%" rate="%rate%">
+	Now, expand your sensations to the entire body. <break time="%break1%"/>
+	And just notice, do you feel tension anywhere? <break time="%break2%"/> Or itching? <break time="%break2%"/> Or pulsing? <break time="%break2%"/> Or pressure? <break time="%break2%"/> Or heaviness? <break time="1s"/>
+</prosody>
+</speak>
