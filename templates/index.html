@@ -1,0 +1,99 @@
+<html>
+<body>
+<h1>Voice Panel</h1>
+<h3>Click 'Submit' to synthesize the following sentences:</h3>
+<p>
+    Now, expand your sensations to the entire body. <br>
+    And just notice, do you feel tension anywhere? Or itching? Or pulsing? Or pressure? Or heaviness?
+</p>
+<h3>Default Voice</h3>
+<audio controls>
+  <source src="speech.mp3" type="audio/mpeg">
+</audio>
+<h3>Let us know the parameters of the best voice you got.</h3>
+<h3>Your Voice</h3>
+<audio controls>
+  <source src="speech_polly.mp3" type="audio/mpeg">
+</audio>
+<div>
+    <form action="/polly">
+        <h2>Gender</h2>
+        <p>
+            <select name="gender" id="genders">
+                <option value="{{ args['gender'] }}" selected>{{ args['gender'] }}</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Non-Binary">Non-Binary</option>
+            </select>
+        </p>
+        <h2>Accent</h2>
+        <p>
+            <select name="accent" id="accents">
+                <option value="{{ args['accent'] }}" selected>{{ args['accent'] }}</option>
+                <option value="American">American</option>
+                <option value="British">British</option>
+                <option value="Asian">Asian</option>
+            </select>
+        </p>
+        <h2>Speed</h2>
+        <p>
+            Slow <label>
+                <input name="speed" type=range min=0 max=100 value="{{ args['speed'] }}" step=25 list=speedBar>
+            </label>
+            <datalist id=speedBar>
+                <option>0</option>
+                <option>25</option>
+                <option>50</option>
+                <option>75</option>
+                <option>100</option>
+            </datalist>
+        Fast
+        </p>
+        <h2>Pitch</h2>
+        <p>
+            Low <label>
+                <input name="pitch" type=range min=0 max=100 value="{{ args['pitch'] }}" step=25 list=pitchBar>
+            </label>
+            <datalist id=pitchBar>
+                <option>0</option>
+                <option>25</option>
+                <option>50</option>
+                <option>75</option>
+                <option>100</option>
+            </datalist>
+            High
+        </p>
+        <h2>Break Time</h2>
+        <p>
+            Short <label>
+                <input name="breakTime" type=range min=1 max=5 value="{{ args['breakTime'] }}" step=1 list=breakBar>
+            </label>
+            <datalist id=breakBar>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </datalist>
+            Long
+        </p>
+        <h2>Break Frequency</h2>
+        <p>
+            Less<label>
+                <input name="breakFreq" type=range min=1 max=5 value="{{ args['breakFreq'] }}" step=1 list=breakBar2>
+            </label>
+            <datalist id=breakBar2>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </datalist>
+            More
+        </p>
+        <p><input type = "Submit" value="Submit"></p>
+    </form>
+</div>
+
+</body>
+</html>
