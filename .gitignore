@@ -1,5 +1,6 @@
-# Auth files
+# Local files
 rootkey.csv
+settings.csv
 
 # Jetbrain IDE
 .idea/

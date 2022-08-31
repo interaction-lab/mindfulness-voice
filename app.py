@@ -15,14 +15,32 @@ SPEED_RATES = {0: 'x-slow', 25: 'slow', 50: 'medium', 75: 'fast', 100: 'x-fast'}
 PITCHES = {0: 'x-low', 25: 'low', 50: 'medium', 75: 'high', 100: 'x-high'}
 DEFAULT_ARGS = {'gender': 'Male', 'accent': 'American', 'speed': 50, 'pitch': 50, 'breakTime': 3, 'breakFreq': 3}
 
+VOICES = {
+    "American": {
+        "Male": "Matthew",
+        "Female": "Salli",
+        "Child": "Justin"
+    },
+    "British": {
+        "Male": "Brian",
+        "Female": "Amy",
+        "Child": "Justin"
+    },
+    "Australian": {
+        "Male": "Russell",
+        "Female": "Nicole",
+        "Child": "Justin"
+    }
+}
 
-def compose_text(pitch="medium", rate="medium", break1="2s", break2="300ms"):
+
+def compose_text(pitch="medium", rate="medium", break1="3", break2="300"):
     with open('transcript.txt', 'r') as file:
         text = file.read().replace('\n', '')
     text = text.replace("%pitch%", pitch)
     text = text.replace("%rate%", rate)
-    text = text.replace("%break1%", break1)
-    text = text.replace("%break2%", break2)
+    text = text.replace("%break1%", break1 + "s")
+    text = text.replace("%break2%", break2 + "ms")
     return text
 
 
@@ -40,7 +58,10 @@ def polly():
     session = Session(profile_name="pollyuser")
     polly_cli = session.client("polly")
     # TODO: break time and break freq
-    text = compose_text(pitch=PITCHES[int(args['pitch'])], rate=SPEED_RATES[int(args['speed'])])
+    text = compose_text(
+        pitch=PITCHES[int(args['pitch'])],
+        rate=SPEED_RATES[int(args['speed'])],
+        break1=args['breakTime'])
     print(text)
 
     try:
@@ -49,7 +70,7 @@ def polly():
             Text=text,
             TextType="ssml",
             OutputFormat="mp3",
-            VoiceId="Joanna")
+            VoiceId=VOICES[args['accent']][args['gender']])
 
     except (BotoCoreError, ClientError) as error:
         # The service returned an error, exit gracefully
@@ -86,6 +107,12 @@ def polly():
     #     # The following works on macOS and Linux. (Darwin = mac, xdg-open = linux).
     #     opener = "open" if sys.platform == "darwin" else "xdg-open"
     #     subprocess.call([opener, output])
+
+    # record the setting
+    with open("settings.csv", "a+") as output:
+        output.write(','.join(
+            [args['gender'], args['accent'], args['speed'], args['pitch'], args['breakTime'], args['breakFreq']]))
+        output.write('\n')
 
     return render_template('index.html', args=args)
 
