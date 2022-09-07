@@ -13,7 +13,8 @@ app = Flask(__name__)
 
 SPEED_RATES = {0: 'x-slow', 25: 'slow', 50: 'medium', 75: 'fast', 100: 'x-fast'}
 PITCHES = {0: 'x-low', 25: 'low', 50: 'medium', 75: 'high', 100: 'x-high'}
-DEFAULT_ARGS = {'gender': 'Male', 'accent': 'American', 'speed': 50, 'pitch': 50, 'breakTime': 3, 'breakFreq': 3}
+DEFAULT_ARGS = {'voice': 'speech_1.mp3', 'gender': 'Male', 'accent': 'American', 'speed': 50, 'pitch': 50,
+                'breakTime': 3, 'breakFreq': 3}
 
 VOICES = {
     "American": {

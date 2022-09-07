@@ -8,7 +8,7 @@
 </p>
 <h3>Default Voice</h3>
 <audio controls>
-  <source src="speech.mp3" type="audio/mpeg">
+  <source src="{{ args['voice'] }}" type="audio/mpeg">
 </audio>
 <h3>Let us know the parameters of the best voice you got.</h3>
 <h3>Your Voice</h3>
@@ -91,6 +91,7 @@
             </datalist>
             More
         </p>
+        <p><input type="hidden" name="voice" value="{{ args['voice'] }}" /></p>
         <p><input type = "Submit" value="Submit"></p>
     </form>
 </div>
