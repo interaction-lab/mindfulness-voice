@@ -5,9 +5,16 @@ from boto3 import Session
 from botocore.exceptions import BotoCoreError, ClientError
 from contextlib import closing
 import os
+import random
 import sys
 import subprocess
 from tempfile import gettempdir
+
+
+pages = ["sample1", "sample2", "polly"]
+random.shuffle(pages)
+
+current = 0
 
 app = Flask(__name__)
 
@@ -47,7 +54,17 @@ def compose_text(pitch="medium", rate="medium", break1="3", break2="300"):
 
 @app.route('/')
 def index():
-    return render_template('index.html', args=DEFAULT_ARGS)
+    return render_template(pages[current] + '.html', args=DEFAULT_ARGS)
+
+
+@app.route('/next')
+def next_page():
+    global current
+    if current == 2:
+        return render_template('complete.html', args=DEFAULT_ARGS)
+
+    current += 1
+    return render_template(pages[current] + '.html', args=DEFAULT_ARGS)
 
 
 @app.route('/polly')
@@ -76,7 +93,7 @@ def polly():
     except (BotoCoreError, ClientError) as error:
         # The service returned an error, exit gracefully
         print(error)
-        return render_template('index.html', args=DEFAULT_ARGS)
+        return render_template('polly.html', args=DEFAULT_ARGS)
 
     # Access the audio stream from the response
     if "AudioStream" in response:
@@ -99,7 +116,7 @@ def polly():
     else:
         # The response didn't contain audio data, exit gracefully
         print("Could not stream audio")
-        return render_template('index.html', args=DEFAULT_ARGS)
+        return render_template('polly.html', args=DEFAULT_ARGS)
 
     # Play the audio using the platform's default player
     # if sys.platform == "win32":
@@ -115,7 +132,7 @@ def polly():
             [args['gender'], args['accent'], args['speed'], args['pitch'], args['breakTime'], args['breakFreq']]))
         output.write('\n')
 
-    return render_template('index.html', args=args)
+    return render_template('polly.html', args=args)
 
 
 @app.route('/<path:filename>')

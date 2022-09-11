@@ -10,11 +10,14 @@
 <audio controls>
   <source src="{{ args['voice'] }}" type="audio/mpeg">
 </audio>
-<h3>Let us know the parameters of the best voice you got.</h3>
 <h3>Your Voice</h3>
 <audio controls>
   <source src="speech_polly.mp3" type="audio/mpeg">
 </audio>
+<h3>
+    Please adjust the following parameters, and compare the new audio with the "Default Voice".
+    Once you are fully satisfied with "Your Voice", answer the evaluation questions
+</h3>
 <div>
     <form action="/polly">
         <h2>Gender</h2>
@@ -93,6 +96,12 @@
         </p>
         <p><input type="hidden" name="voice" value="{{ args['voice'] }}" /></p>
         <p><input type = "Submit" value="Submit"></p>
+    </form>
+</div>
+<h3>Click 'Next' to evaluate the next voice:</h3>
+<div>
+    <form action="/next">
+        <p><input type="Submit" value="Next"></p>
     </form>
 </div>
 
