@@ -20,8 +20,7 @@ app = Flask(__name__)
 
 SPEED_RATES = {0: 'x-slow', 25: 'slow', 50: 'medium', 75: 'fast', 100: 'x-fast'}
 PITCHES = {0: 'x-low', 25: 'low', 50: 'medium', 75: 'high', 100: 'x-high'}
-DEFAULT_ARGS = {'voice': 'speech_1.mp3', 'gender': 'Male', 'accent': 'American', 'speed': 50, 'pitch': 50,
-                'breakTime': 3, 'breakFreq': 3}
+DEFAULT_ARGS = {'gender': 'Male', 'accent': 'American', 'speed': 50, 'pitch': 50, 'breakTime': 50}
 
 VOICES = {
     "American": {
@@ -42,13 +41,13 @@ VOICES = {
 }
 
 
-def compose_text(pitch="medium", rate="medium", break1="3", break2="300"):
+def compose_text(pitch="medium", rate="medium", break_time=50):
     with open('transcript.txt', 'r') as file:
         text = file.read().replace('\n', '')
     text = text.replace("%pitch%", pitch)
     text = text.replace("%rate%", rate)
-    text = text.replace("%break1%", break1 + "s")
-    text = text.replace("%break2%", break2 + "ms")
+    text = text.replace("%break1%", str(1 + 0.04 * break_time) + "s")
+    text = text.replace("%break2%", str(100 + 4 * break_time) + "ms")
     return text
 
 
@@ -79,7 +78,7 @@ def polly():
     text = compose_text(
         pitch=PITCHES[int(args['pitch'])],
         rate=SPEED_RATES[int(args['speed'])],
-        break1=args['breakTime'])
+        break_time=int(args['breakTime']))
     print(text)
 
     try:
@@ -129,7 +128,7 @@ def polly():
     # record the setting
     with open("settings.csv", "a+") as output:
         output.write(','.join(
-            [args['gender'], args['accent'], args['speed'], args['pitch'], args['breakTime'], args['breakFreq']]))
+            [args['gender'], args['accent'], args['speed'], args['pitch'], args['breakTime']]))
         output.write('\n')
 
     return render_template('polly.html', args=args)

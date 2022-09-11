@@ -3,12 +3,16 @@
 <h1>Voice Panel</h1>
 <h3>Click 'Submit' to synthesize the following sentences:</h3>
 <p>
-    Now, expand your sensations to the entire body. <br>
+    Start the meditation, by either closing your eyes or softening your eyes <br>
+    And then bring your attention to the in-out sensations of your breath <br>
+    Breathing in, just know you’re breathing in And when you breathe out, just know you’re breathing out <br>
+    Breathing in, and breathing out <br>
+    Now, expand your sensations to the entire body <br>
     And just notice, do you feel tension anywhere? Or itching? Or pulsing? Or pressure? Or heaviness?
 </p>
 <h3>Default Voice</h3>
 <audio controls>
-  <source src="{{ args['voice'] }}" type="audio/mpeg">
+  <source src="speech.mp3" type="audio/mpeg">
 </audio>
 <h3>Your Voice</h3>
 <audio controls>
@@ -69,32 +73,17 @@
         <h2>Break Time</h2>
         <p>
             Short <label>
-                <input name="breakTime" type=range min=1 max=5 value="{{ args['breakTime'] }}" step=1 list=breakBar>
+                <input name="breakTime" type=range min=0 max=100 value="{{ args['breakTime'] }}" step=1 list=breakBar>
             </label>
             <datalist id=breakBar>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+                <option>0</option>
+                <option>25</option>
+                <option>50</option>
+                <option>75</option>
+                <option>100</option>
             </datalist>
             Long
         </p>
-        <h2>Break Frequency</h2>
-        <p>
-            Less<label>
-                <input name="breakFreq" type=range min=1 max=5 value="{{ args['breakFreq'] }}" step=1 list=breakBar2>
-            </label>
-            <datalist id=breakBar2>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </datalist>
-            More
-        </p>
-        <p><input type="hidden" name="voice" value="{{ args['voice'] }}" /></p>
         <p><input type = "Submit" value="Submit"></p>
     </form>
 </div>

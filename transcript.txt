@@ -1,6 +1,10 @@
 <speak>
 <prosody pitch="%pitch%" rate="%rate%">
-	Now, expand your sensations to the entire body. <break time="%break1%"/>
-	And just notice, do you feel tension anywhere? <break time="%break2%"/> Or itching? <break time="%break2%"/> Or pulsing? <break time="%break2%"/> Or pressure? <break time="%break2%"/> Or heaviness? <break time="1s"/>
+	Start the meditation, by either closing your eyes or softening your eyes <break time="%break1%"/>
+    And then bring your attention <break strength="medium"/> to the in-out sensations of your breath <break time="%break1%"/>
+    Breathing in, just know you’re breathing in <break time="%break2%"/> And when you breathe out, just know you’re breathing out <break time="%break1%"/>
+    Breathing in, and breathing out <break time="%break1%"/>
+    Now, expand your sensations to the entire body <break time="%break1%"/>
+    And just notice, do you feel tension anywhere? <break time="%break2%"/> Or itching? <break time="%break2%"/> Or pulsing? <break time="%break2%"/> Or pressure? <break time="%break2%"/> Or heaviness? <break time="1s"/>
 </prosody>
 </speak>
