@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, send_from_directory
 from boto3 import Session
 from botocore.exceptions import BotoCoreError, ClientError
 from contextlib import closing
+from datetime import datetime
 import os
 import random
 import sys
@@ -11,8 +12,15 @@ import subprocess
 from tempfile import gettempdir
 
 
+start_time = datetime.now().strftime("%Y%m%d_%H%M")
+output_file = os.path.join('results', start_time + ".csv")
+
 pages = ["sample1", "sample2", "polly"]
 random.shuffle(pages)
+
+with open(output_file, "a+") as output:
+    output.write(','.join(pages))
+    output.write('\n')
 
 current = 0
 
@@ -64,6 +72,14 @@ def next_page():
 
     current += 1
     return render_template(pages[current] + '.html', args=DEFAULT_ARGS)
+
+
+@app.route('/complete')
+def completion_code():
+    with open(output_file, "a+") as output:
+        output.write(request.args['ccode'])
+        output.write('\n')
+    return render_template('end.html', args=DEFAULT_ARGS)
 
 
 @app.route('/polly')
@@ -126,7 +142,7 @@ def polly():
     #     subprocess.call([opener, output])
 
     # record the setting
-    with open("settings.csv", "a+") as output:
+    with open(output_file, "a+") as output:
         output.write(','.join(
             [args['gender'], args['accent'], args['speed'], args['pitch'], args['breakTime']]))
         output.write('\n')
