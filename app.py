@@ -76,9 +76,7 @@ def next_page():
 
 @app.route('/complete')
 def completion_code():
-    with open(output_file, "a+") as output:
-        output.write(request.args['ccode'])
-        output.write('\n')
+    os.rename(output_file, os.path.join('results', 'ccode_' + request.args['ccode'] + '.csv'))
     return render_template('end.html', args=DEFAULT_ARGS)
 
 
