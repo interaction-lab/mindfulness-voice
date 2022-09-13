@@ -27,7 +27,7 @@
         <h2>Gender</h2>
         <p>
             <select name="gender" id="genders">
-                <option value="{{ args['gender'] }}" selected>{{ args['gender'] }}</option>
+                <option value="{{ args['gender'] }}" selected hidden>{{ args['gender'] }}</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Child">Child</option>
@@ -36,7 +36,7 @@
         <h2>Accent (only for Male/Female)</h2>
         <p>
             <select name="accent" id="accents">
-                <option value="{{ args['accent'] }}" selected>{{ args['accent'] }}</option>
+                <option value="{{ args['accent'] }}" selected hidden>{{ args['accent'] }}</option>
                 <option value="American">American</option>
                 <option value="British">British</option>
                 <option value="Australian">Australian</option>
