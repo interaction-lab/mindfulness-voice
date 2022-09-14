@@ -1,26 +1,33 @@
 <html>
 <body>
-<h1>Voice Panel</h1>
-<h3>Click 'Submit' to synthesize the following sentences:</h3>
+<h1>Voice Evaluation (Polly)</h1>
+<h3>Click 'Generate Voice' to synthesize voice for the following sentences:</h3>
 <p>
-    Now, expand your sensations to the entire body. <br>
+    Start the meditation, by either closing your eyes or softening your eyes <br>
+    And then bring your attention to the in-out sensations of your breath <br>
+    Breathing in, just know you're breathing in And when you breathe out, just know you're breathing out <br>
+    Breathing in, and breathing out <br>
+    Now, expand your sensations to the entire body <br>
     And just notice, do you feel tension anywhere? Or itching? Or pulsing? Or pressure? Or heaviness?
 </p>
 <h3>Default Voice</h3>
 <audio controls>
-  <source src="{{ args['voice'] }}" type="audio/mpeg">
+  <source src="speech.mp3" type="audio/mpeg">
 </audio>
-<h3>Let us know the parameters of the best voice you got.</h3>
 <h3>Your Voice</h3>
 <audio controls>
   <source src="speech_polly.mp3" type="audio/mpeg">
 </audio>
+<h3>
+    Please adjust the following parameters, and compare the new audio with the "Default Voice".
+    Once you are fully satisfied with "Your Voice", answer the evaluation questions
+</h3>
 <div>
     <form action="/polly">
         <h2>Gender</h2>
         <p>
             <select name="gender" id="genders">
-                <option value="{{ args['gender'] }}" selected>{{ args['gender'] }}</option>
+                <option value="{{ args['gender'] }}" selected hidden>{{ args['gender'] }}</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
                 <option value="Child">Child</option>
@@ -29,7 +36,7 @@
         <h2>Accent (only for Male/Female)</h2>
         <p>
             <select name="accent" id="accents">
-                <option value="{{ args['accent'] }}" selected>{{ args['accent'] }}</option>
+                <option value="{{ args['accent'] }}" selected hidden>{{ args['accent'] }}</option>
                 <option value="American">American</option>
                 <option value="British">British</option>
                 <option value="Australian">Australian</option>
@@ -66,33 +73,27 @@
         <h2>Break Time</h2>
         <p>
             Short <label>
-                <input name="breakTime" type=range min=1 max=5 value="{{ args['breakTime'] }}" step=1 list=breakBar>
+                <input name="breakTime" type=range min=0 max=100 value="{{ args['breakTime'] }}" step=1 list=breakBar>
             </label>
             <datalist id=breakBar>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+                <option>0</option>
+                <option>25</option>
+                <option>50</option>
+                <option>75</option>
+                <option>100</option>
             </datalist>
             Long
         </p>
-        <h2>Break Frequency</h2>
-        <p>
-            Less<label>
-                <input name="breakFreq" type=range min=1 max=5 value="{{ args['breakFreq'] }}" step=1 list=breakBar2>
-            </label>
-            <datalist id=breakBar2>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </datalist>
-            More
-        </p>
-        <p><input type="hidden" name="voice" value="{{ args['voice'] }}" /></p>
-        <p><input type = "Submit" value="Submit"></p>
+        <p><input type = "Submit" value="Generate Voice"></p>
+    </form>
+    <br>
+    <br>
+    <br>
+</div>
+<h3>Are you satisfied with "Your Voice"? If so, click 'Next' to evaluate the next voice:</h3>
+<div>
+    <form action="/next">
+        <p><input type="Submit" value="Next"></p>
     </form>
 </div>
 

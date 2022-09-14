@@ -1,6 +1,7 @@
 # Local files
 rootkey.csv
 settings.csv
+result/*.csv
 
 # Jetbrain IDE
 .idea/

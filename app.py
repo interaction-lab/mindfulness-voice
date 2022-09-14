@@ -4,17 +4,31 @@ from flask import Flask, render_template, request, send_from_directory
 from boto3 import Session
 from botocore.exceptions import BotoCoreError, ClientError
 from contextlib import closing
+from datetime import datetime
 import os
+import random
 import sys
 import subprocess
 from tempfile import gettempdir
+
+
+start_time = datetime.now().strftime("%Y%m%d_%H%M")
+output_file = os.path.join('results', start_time + ".csv")
+
+pages = ["sample1", "sample2", "polly"]
+random.shuffle(pages)
+
+with open(output_file, "a+") as output:
+    output.write(','.join(pages))
+    output.write('\n')
+
+current = 0
 
 app = Flask(__name__)
 
 SPEED_RATES = {0: 'x-slow', 25: 'slow', 50: 'medium', 75: 'fast', 100: 'x-fast'}
 PITCHES = {0: 'x-low', 25: 'low', 50: 'medium', 75: 'high', 100: 'x-high'}
-DEFAULT_ARGS = {'voice': 'speech_1.mp3', 'gender': 'Male', 'accent': 'American', 'speed': 50, 'pitch': 50,
-                'breakTime': 3, 'breakFreq': 3}
+DEFAULT_ARGS = {'gender': 'Male', 'accent': 'American', 'speed': 50, 'pitch': 50, 'breakTime': 50}
 
 VOICES = {
     "American": {
@@ -35,19 +49,35 @@ VOICES = {
 }
 
 
-def compose_text(pitch="medium", rate="medium", break1="3", break2="300"):
+def compose_text(pitch="medium", rate="medium", break_time=50):
     with open('transcript.txt', 'r') as file:
         text = file.read().replace('\n', '')
     text = text.replace("%pitch%", pitch)
     text = text.replace("%rate%", rate)
-    text = text.replace("%break1%", break1 + "s")
-    text = text.replace("%break2%", break2 + "ms")
+    text = text.replace("%break1%", str(1 + 0.04 * break_time) + "s")
+    text = text.replace("%break2%", str(100 + 4 * break_time) + "ms")
     return text
 
 
 @app.route('/')
 def index():
-    return render_template('index.html', args=DEFAULT_ARGS)
+    return render_template(pages[current] + '.html', args=DEFAULT_ARGS)
+
+
+@app.route('/next')
+def next_page():
+    global current
+    if current == 2:
+        return render_template('complete.html', args=DEFAULT_ARGS)
+
+    current += 1
+    return render_template(pages[current] + '.html', args=DEFAULT_ARGS)
+
+
+@app.route('/complete')
+def completion_code():
+    os.rename(output_file, os.path.join('results', 'ccode_' + request.args['ccode'] + '.csv'))
+    return render_template('end.html', args=DEFAULT_ARGS)
 
 
 @app.route('/polly')
@@ -62,7 +92,7 @@ def polly():
     text = compose_text(
         pitch=PITCHES[int(args['pitch'])],
         rate=SPEED_RATES[int(args['speed'])],
-        break1=args['breakTime'])
+        break_time=int(args['breakTime']))
     print(text)
 
     try:
@@ -76,7 +106,7 @@ def polly():
     except (BotoCoreError, ClientError) as error:
         # The service returned an error, exit gracefully
         print(error)
-        return render_template('index.html', args=DEFAULT_ARGS)
+        return render_template('polly.html', args=DEFAULT_ARGS)
 
     # Access the audio stream from the response
     if "AudioStream" in response:
@@ -99,7 +129,7 @@ def polly():
     else:
         # The response didn't contain audio data, exit gracefully
         print("Could not stream audio")
-        return render_template('index.html', args=DEFAULT_ARGS)
+        return render_template('polly.html', args=DEFAULT_ARGS)
 
     # Play the audio using the platform's default player
     # if sys.platform == "win32":
@@ -110,12 +140,12 @@ def polly():
     #     subprocess.call([opener, output])
 
     # record the setting
-    with open("settings.csv", "a+") as output:
+    with open(output_file, "a+") as output:
         output.write(','.join(
-            [args['gender'], args['accent'], args['speed'], args['pitch'], args['breakTime'], args['breakFreq']]))
+            [args['gender'], args['accent'], args['speed'], args['pitch'], args['breakTime']]))
         output.write('\n')
 
-    return render_template('index.html', args=args)
+    return render_template('polly.html', args=args)
 
 
 @app.route('/<path:filename>')
