@@ -2,6 +2,7 @@
 rootkey.csv
 settings.csv
 result/*.csv
+audio_settings/
 
 # Jetbrain IDE
 .idea/
