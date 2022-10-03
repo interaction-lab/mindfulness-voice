@@ -3,6 +3,8 @@ rootkey.csv
 settings.csv
 result/*.csv
 audio_settings/
+alexa_settings/
+blossom_settings/
 
 # Jetbrain IDE
 .idea/
